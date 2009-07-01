@@ -11,7 +11,7 @@ require 'inline'
 # http://seattlerb.rubyforge.org/ImageScience.html
 
 class ImageScience
-  VERSION = '1.2.0'
+  VERSION = '1.2.1'
 
   ##
   # The top-level image loader opens +path+ and then yields the image.
@@ -136,6 +136,7 @@ class ImageScience
 
     builder.prefix <<-"END"
       void FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *message) {
+        if (! RTEST(ruby_debug)) return;
         rb_raise(rb_eRuntimeError,
                  "FreeImage exception for type %s: %s",
                   (fif == FIF_UNKNOWN) ? "???" : FreeImage_GetFormatFromFIF(fif),
